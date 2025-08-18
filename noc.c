@@ -96,6 +96,7 @@
 char *filename;
 FILE *fptr;
 FILE *logfile;
+char *log_filename = ".noclogs";
 
 int movex = 0;  // movex and movey are used only inside move() functions to correct for text wrapping
 int movey = 1;
@@ -143,7 +144,7 @@ char** lines = NULL;   // main array of lines which are arrays of each position
 
 int init_logs()
 {
-  logfile = fopen("logs.txt", "w");
+  logfile = fopen(log_filename, "w");
   if(logfile==NULL)
   {
     return 1;
@@ -157,7 +158,7 @@ int init_logs()
 
 void log_message(char *pmsg)
 {
-  logfile = fopen("logs.txt", "a");
+  logfile = fopen(log_filename, "a");
   fprintf(logfile, "%s\n", pmsg);
   fclose(logfile);
 }
@@ -614,7 +615,7 @@ int main(int argc, char **argv)
   if(init_logs())
   {
     endwin();
-    printf("Error initializing log file\nCheck if logs.txt is read protected\n");
+    printf("Error initializing log file\nCheck if %s is read protected\n", log_filename);
     exit(1);
   }
   log_message("Logs initialized");
@@ -652,6 +653,13 @@ int main(int argc, char **argv)
 
   filename = argv[1];
   log_message("filename read");
+  if(strcmp(filename, ".noclogs") == 0)
+  {
+    end_window();
+    printf("Cannot edit noc log file with noc\n");
+    printf("Please use another text editor or change the log filename\n");
+    exit(1);
+  }
   if(init_file())
   {
     end_window();
