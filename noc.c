@@ -142,7 +142,7 @@ char** lines = NULL;   // main array of lines which are arrays of each position
 
 /**************************************************LOGGING********************************/
 
-int init_logs()
+int init_logs(void)
 {
   logfile = fopen(log_filename, "w");
   if(logfile==NULL)
@@ -174,7 +174,7 @@ int is_char(int val)
 
 
 
-int end_window()    // only use after initializing lines  ;  before that use endwin()
+int end_window(void)    // only use after initializing lines  ;  before that use endwin()
 {
   for(i=0;i<linecount;i++)
   {
@@ -206,7 +206,7 @@ int end_window()    // only use after initializing lines  ;  before that use end
 /**************************************************MEMORY********************************************/
 
 
-char* init_line()
+char* init_line(void)
 {                     // im looking at this line below and this cannot be the best way to do this
   char *line = (char *)malloc(linecharcap);
   if(line == NULL)
@@ -224,7 +224,7 @@ char* init_line()
   }
 }
 
-void del_line()
+void del_line(void)
 {
   for(i=ymin+y-1;i<linecount-1;i++)
   {
@@ -235,7 +235,7 @@ void del_line()
 }
 
 
-void shift_lines()
+void shift_lines(void)
 {
   for(i=linecount;i>y+ymin;i--)
   {
@@ -248,7 +248,7 @@ void shift_lines()
   }
 }
 
-void shift_chars()
+void shift_chars(void)
 {
   for(j=linecharcap;j>x;j--)
   {
@@ -258,7 +258,7 @@ void shift_chars()
 
 /*****************************************************EDITING FUNCTIONS********************************/
 
-void backspace()
+void backspace(void)
 {
   if(x > 0)
   {
@@ -291,7 +291,7 @@ void backspace()
   }
 }
 
-void new_line()
+void new_line(void)
 {
   lines[linecount] = init_line();
   shift_lines();
@@ -327,7 +327,7 @@ void space_tab(int tab_spaces)
 
 /**************************************************MOVEMENT**************************************/
 
-void move_down()
+void move_down(void)
 {
   if(ymin+y<linecount && y+1<ymax)
   {
@@ -354,7 +354,7 @@ void move_down()
   }
 }
 
-int move_up()
+int move_up(void)
 {
   if(y == 1 && ymin > 0)
   {
@@ -387,7 +387,7 @@ int move_up()
   }
 }
 
-void move_right()
+void move_right(void)
 {
   if(movex != xmax)
   {
@@ -408,7 +408,7 @@ void move_right()
   }
 }
 
-void move_left()
+void move_left(void)
 {
   if(movex == 0 && x != 0)
   {
@@ -447,7 +447,7 @@ void write_footer(char *pmsg)
 }
 
 
-void write_title()
+void write_title(void)
 {
   move(0,0);
   if(mode==0){printw("q - quit               e - edit mode");}
@@ -456,7 +456,7 @@ void write_title()
   move(movey,movex);
 }
 
-void write_chrcs()
+void write_chrcs(void)
 {
   clear();
   write_title();
@@ -488,7 +488,7 @@ void write_chrcs()
 
 /*********************************************FILE MANAGEMENT*********************************/
 
-int init_file()
+int init_file(void)
 {
   if(access(filename, F_OK) == 0)
   {
@@ -516,7 +516,7 @@ int init_file()
   }
 }
 
-void save_file()
+void save_file(void)
 {
   fptr = fopen(filename, "w");
   if(fptr == NULL)
@@ -535,7 +535,7 @@ void save_file()
 
 /******************************PUT IT ALL IN THE POT***********************/
 
-void edit_mode()
+void edit_mode(void)
 {
   mode = 1;
 	while(key != 27) // ESC
