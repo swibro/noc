@@ -5,26 +5,72 @@
 #include <unistd.h>
 
 
-/* Code Overview:
+/**********************************OVERVIEW****************************************
+ *
+ * noc 
+ *
+ * This is a text editor that takes in a filename as an argument and either opens
+ * and allows editing of the file or creates a new one and allows editing of that
+ * if it does not exist.
+ *
+ * The main memory is the pointer array 'lines' which points to array pointers
+ * 'lines[i]'. Characters are stored at 'lines[i][j]', which would be the j-th
+ * character in row i.
+ *
+ * text wrapping may not be the best as I had to use two variables so when moving
+ * better to just use movex++ and x++ or movey++ and y++ unless dealing specifically
+ * with text wrapping
  * 
- * This is a text editor that takes in a filename as an argument and either opens and allows editing
- * of the file or creates a new one and allows editing of that if it does not exist.
  *
- * The main memory is the pointer array 'lines' which points to array pointers 'lines[i]'. Characters
- * are stored at 'lines[i][j]', which would be the j-th character in row i.
  *
- * text wrapping may not be the best as I had to use two variables so when moving better to just use
- * movex++ and x++ or movey++ and y++ unless dealing specifically with text wrapping
  *
- */
-
-
-// For memory purposes unbeknownst to me use lines[0] to represent y=1 or the first line of typing.
-// ymax use the same numbering system as y therefore the final line will be lines[ymax-1]
-
-
-/*
- * words to only be used as local variables:
+ **********************************LICENSE*****************************************
+ *
+ * BSD 2-Clause License
+ *
+ * Copyright (c) 2025, Spencer Brown <gamelover750 at yahoo dot com>
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
+ *
+ * 1. Redistributions of source code must retain the above copyright notice, this
+ *    list of conditions and the following disclaimer.
+ *
+ * 2. Redistributions in binary form must reproduce the above copyright notice,
+ *    this list of conditions and the following disclaimer in the documentation
+ *    and/or other materials provided with the distribution.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+ * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+ * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+ * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+ * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ * 
+ *
+ *
+ *
+ ******************************INDEXING NOTES*****************************************
+ *
+ * For memory purposes unbeknownst to me use lines[0] to represent y=1
+ * or the first line of typing.
+ * 
+ * When referring to current line use lines[y-1]
+ * 
+ * By the same token, lines[ymax-1] is the lowest line, do not print 
+ * lines[ymax-1] or you get an artifact in the bottom right corner.
+ * 
+ * ymax use the same numbering system as y therefore the final line will be lines[ymax-1]
+ *
+ *
+ *
+ *
+ ********************************LOCAL/TEMP VARS***********************************
+ * 
  *  -line
  *  -val
  *  -pmsg
@@ -32,15 +78,17 @@
  *
  *
  *
- */
+ **********************************BUGS*******************************************
+ *
+ * not really a bug but unistd.h which provides access functions
+ * for checking file existence/permissions doesnt work on windows
+ *
+ *
+ *
+ *
+ *********************************************************************************/
 
-/*******BUGS********
- *
- *
- * not really a bug but unistd.h which provides access functions for checking file existence/permissions
- * doesnt work on windows
- *
- *******************/
+
 
 
 /************************************************GLOBALS*************************************/
@@ -58,13 +106,12 @@ int y = 1;
 
 int j;      // looping var over all x in a line
 int i;      // looping var over all lines in the file/y on screen
-int k;      // active memory index (keeps track of how many lines are stored)
 
 int xmax;
 int ymax;
 int ymin;   // ymin used to indicate top visible row; same indexing as lines[i][j] so ymin = 0 is the first writable line
 
-int key; 																	// i think making key a global is a good idea
+int key;
 
 
 int mode = 0;
@@ -80,7 +127,8 @@ int mode = 0;
 int linecap = 1024;
 int linecharcap = 512;
 
-int linecount = 0;
+int linecount = 0; // linecount++ and -- should be reserved for the edit_mode() and main() functions
+                   // this is just for readability and code segmentation
 
 char** lines = NULL;   // main array of lines which are arrays of each position
                        // lines[y-1][x] represents the character stored at position (y,x) (ncurses notation)
@@ -207,7 +255,7 @@ void shift_chars()
   }
 }
 
-/*****************************************************MOVEMENT/EDITING FUNCTIONS********************************/
+/*****************************************************EDITING FUNCTIONS********************************/
 
 void backspace()
 {
@@ -276,7 +324,7 @@ void space_tab(int tab_spaces)
   }
 }
 
-// used for key up and down movements in read and edit move
+/**************************************************MOVEMENT**************************************/
 
 void move_down()
 {
