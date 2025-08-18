@@ -1,7 +1,7 @@
-all: texty
+all: noc
 
-texty: rewrite.c
-	gcc -o /usr/bin/texty rewrite.c -Wall -W -pedantic -lncurses
+noc: noc.c
+	gcc -o /usr/bin/noc noc.c -Wall -W -pedantic -lncurses
 
 clean:
-	rm -f /usr/bin/texty
+	rm -f /usr/bin/noc
