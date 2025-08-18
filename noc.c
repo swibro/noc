@@ -443,15 +443,14 @@ int init_file()
 {
   if(access(filename, F_OK) == 0)
   {
+    log_message("File found");
     fptr = fopen(filename, "r");
     if(fptr == NULL)
     {
       log_message("Error opening edit file");
+      return 1;
     }
-
-
     i=0;
-
     while(fgets(lines[i], linecharcap, fptr))
     {
       i++;
@@ -463,7 +462,8 @@ int init_file()
   }
   else
   {
-    return 1;
+    log_message("File not found");
+    return 0;
   }
 }
 
