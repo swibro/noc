@@ -1,8 +1,13 @@
 # noc
+
 A minimalist text editor written in &lt;700 lines of C.
-Supported OS:
--Linux
--MacOS(Darwin)
+
+### Supported OS:
+
+    Linux
+
+    MacOS(Darwin)
 
 # Install
-clone repository and run 'sudo make' in the main directory.
+
+clone repository and run `sudo make` in the main directory.
