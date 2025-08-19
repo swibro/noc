@@ -582,7 +582,7 @@ void edit_mode(void)
         space_tab(2);
         break;
 
-			default:
+      default:
         if(is_char(key))
         {
           shift_chars();
