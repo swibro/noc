@@ -716,7 +716,7 @@ int main(int argc, char **argv)
         write_footer("");
         move(ymax-1,xmax/2);
         int tempkey = getch();
-        printw("%d",tempkey);
+        printw("%d - Press any key to continue",tempkey);
         move(movey,movex);
         getch();
 #endif
