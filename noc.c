@@ -709,7 +709,8 @@ int main(int argc, char **argv)
         }
         break;
 
-      /* dev */ /*
+      /************DEV/DEBUG TOOLS***********/
+#ifdef DEBUG
       case 'p':
         write_footer("Press a key");
         write_footer("");
@@ -718,7 +719,8 @@ int main(int argc, char **argv)
         printw("%d",tempkey);
         move(movey,movex);
         getch();
-      */
+#endif
+      /**************************************/
 		}
 	}
   log_message("switch exited");

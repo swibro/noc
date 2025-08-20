@@ -17,5 +17,8 @@ all: noc
 noc: noc.c
 	$(cc) -o $(path) noc.c -Wall -W -pedantic -lncurses
 
+debug: noc.c
+	$(cc) -DDEBUG -o $(path) noc.c -Wall -W -pedantic -lncurses
+
 clean:
 	rm -f $(path)
