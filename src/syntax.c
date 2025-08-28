@@ -1,18 +1,33 @@
 #include <curses.h>
+#include <ctype.h>
+
+// add to everything to header file when done
+
+
+struct statement_list {
+  
+}
+
+int is_statement(char* tempstr) {
+
+}
 
 void tokenize(void) {
-  const char delims[40] = "~`!@#$%^&*()-+={}[]:;,.<>?/'| ";
   for(i=0;i<ymax;i++) {
-    char* token_buffer = lines[ymin + i];
-    display_lines[i] = strtok(token_buffer, delims);
-  }
-  for(i=0;i<ymax;i++) {
-    while(display_lines[i] != 0) {
-      move(i, 0);
-      printw("%s", display_lines[i]);
-      display_lines[i] = strtok(NULL, delims);
+    for(j=0;j<linecharcap;j++) {
+      if(isalpha(lines[ymin + i][j])) {
+
+      }
+      else if(isdigit(lines[ymin + i][j])) {
+
+      }
+      else if(ispunct(lines[ymin + i][j])) {
+        if(lines[ymin + i][j] == '.' && isdigit(lines[ymin + i][j - 1])) {
+          continue;
+        }
+
+      }
     }
-  }
 }
 
 void init_colors(void) {

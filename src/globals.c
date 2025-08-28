@@ -44,4 +44,3 @@ char** lines = NULL;   // main array of lines which are arrays of each position
                        // y-1 because nothing needs to be stored on title line
                        // once again this implies the last line will be lines[ymax-1]
 
-char** display_lines = NULL;
