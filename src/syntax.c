@@ -1,15 +1,30 @@
 #include <curses.h>
+#include <string.h>
 #include <ctype.h>
+#include "uthash.h"
+#include "keywords.h"
 
 // add to everything to header file when done
+const char *delims = "
 
-
-struct statement_list {
-  
-}
-
-int is_statement(char* tempstr) {
-
+int is_keyword(char *line) {
+  char *linebuff = malloc(strlen(line) + 1);
+  strcpy(linebuff, line);
+  char * tok;
+  tok = strtok(linebuff, delims);
+  struct keyword *found;
+  while(tok != NULL) {
+    HASH_FIND_STR(kw_table, tok, found);
+    if(found != NULL) {
+      if(found->id < 16) {
+        // type
+      }
+      else {
+        // keyword
+      }
+    }
+    tok = strtok(NULL, delims);
+  }
 }
 
 void tokenize(void) {
@@ -19,7 +34,12 @@ void tokenize(void) {
 
       }
       else if(isdigit(lines[ymin + i][j])) {
-
+        if(isalpha(lines[ymin + i][j - 1]) || lines[ymin + i][j - 1] == '.') {
+          continue;
+        }
+        else if(isalpha(lines[ymin + i][j + 1])) {
+          continue;
+        }
       }
       else if(ispunct(lines[ymin + i][j])) {
         if(lines[ymin + i][j] == '.' && isdigit(lines[ymin + i][j - 1])) {
