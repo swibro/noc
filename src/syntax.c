@@ -3,11 +3,26 @@
 #include <ctype.h>
 #include "uthash.h"
 #include "keywords.h"
+#include "globals.h"
 
 // add to everything to header file when done
-const char *delims = "
+const char *delims = ""
+int pos_buff = 0;
 
-int is_keyword(char *line) {
+
+int colorize(int token_id, int pos_char) {
+  switch(token_id) {
+    case 1:
+      move(movey, pos_char);
+      attron(COLOR_PAIR(4));
+      printw("void");
+      attroff(COLOR_PAIR(4));
+      move(movey, movex);
+  }
+}
+
+
+int tokenize(char *line) {
   char *linebuff = malloc(strlen(line) + 1);
   strcpy(linebuff, line);
   char * tok;
@@ -16,8 +31,9 @@ int is_keyword(char *line) {
   while(tok != NULL) {
     HASH_FIND_STR(kw_table, tok, found);
     if(found != NULL) {
+      pos_buff = tok - linebuff
       if(found->id < 16) {
-        // type
+        colorize(found->id, pos_buff);
       }
       else {
         // keyword
@@ -25,7 +41,10 @@ int is_keyword(char *line) {
     }
     tok = strtok(NULL, delims);
   }
+  free(linebuff);
 }
+
+/*
 
 void tokenize(void) {
   for(i=0;i<ymax;i++) {
@@ -49,6 +68,8 @@ void tokenize(void) {
       }
     }
 }
+
+*/
 
 void init_colors(void) {
   start_color();

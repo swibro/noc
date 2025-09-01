@@ -6,6 +6,7 @@
 
 #include "globals.h"
 #include "logs.h"
+#include "syntax.h"
 
 /**********************************OVERVIEW****************************************
  *
@@ -404,6 +405,7 @@ void write_chrcs(void)
         move((i+1) + (wrap_buff-1), j);
         printw("%c", lines[i+ymin][j]);
       }
+      tokenize(lines[i]);
     }
     else
     {
